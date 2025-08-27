@@ -1,0 +1,89 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card border-danger">
+        <div class="card-header bg-danger text-white">
+          <h3 class="mb-0">
+            <i class="fas fa-exclamation-triangle"></i>
+            Erro
+          </h3>
+        </div>
+        <div class="card-body text-center">
+          <div class="error-icon mb-4">
+            <i class="fas fa-times-circle text-danger" style="font-size: 4rem;"></i>
+          </div>
+          
+          <h4 class="text-danger mb-3">Oops! Algo deu errado</h4>
+          
+          <div class="error-message mb-4">
+            <% if (error && typeof error === 'object' && error.message) { %>
+              <p class="alert alert-danger">
+                <strong>Erro:</strong> <%= error.message %>
+              </p>
+            <% } else if (error) { %>
+              <p class="alert alert-danger">
+                <strong>Erro:</strong> <%= error %>
+              </p>
+            <% } else { %>
+              <p class="alert alert-warning">
+                Ocorreu um erro inesperado. Tente novamente mais tarde.
+              </p>
+            <% } %>
+          </div>
+
+          <div class="error-actions">
+            <a href="javascript:history.back()" class="btn btn-secondary mr-3">
+              <i class="fas fa-arrow-left"></i>
+              Voltar
+            </a>
+            <a href="/books" class="btn btn-primary mr-3">
+              <i class="fas fa-book"></i>
+              Ir para Biblioteca
+            </a>
+            <a href="/" class="btn btn-outline-primary">
+              <i class="fas fa-home"></i>
+              Página Inicial
+            </a>
+          </div>
+        </div>
+        
+        <div class="card-footer text-muted text-center">
+          <small>
+            Se o problema persistir, entre em contato com o administrador.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.error-icon {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.card {
+  box-shadow: 0 0 20px rgba(220, 53, 69, 0.3);
+  border-radius: 10px;
+}
+
+.btn {
+  margin: 5px;
+}
+
+.alert {
+  border-radius: 8px;
+}
+</style>
