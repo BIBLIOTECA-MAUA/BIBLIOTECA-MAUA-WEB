@@ -1,0 +1,109 @@
+<section class="fruit_section layout_padding">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2>
+        Nossa Biblioteca
+      </h2>
+    </div>
+    <div class="fruit_container">
+      <div class="row">
+        <% if (books && books.length > 0) { %>
+          <% books.forEach((book, idx) => { %>
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="fruit_detail-box cardM1 h-100">
+                <% if (book.cover && book.cover.url) { %>
+                  <div class="fruit_img-box">
+                    <img src="<%= book.cover.url %>" alt="<%= book.title %>" class="img-fluid">
+                  </div>
+                <% } else if (book.coverImage) { %>
+                  <div class="fruit_img-box">
+                    <img src="<%= book.coverImage %>" alt="<%= book.title %>" class="img-fluid">
+                  </div>
+                <% } %>
+                
+                <div class="fruit_detail p-3">
+                  <h4 class="fruit_name">
+                    <%= book.title %>
+                  </h4>
+                  
+                  <% if (book.author && book.author.nomeReferencial) { %>
+                    <p class="author mb-2">
+                      <strong>Autor:</strong> <%= book.author.nomeReferencial %>
+                    </p>
+                  <% } %>
+
+                  <% if (book.theme) { %>
+                    <p class="theme mb-2">
+                      <strong>Tema:</strong> <%= book.theme %>
+                    </p>
+                  <% } %>
+
+                  <% if (book.publishedYear) { %>
+                    <p class="year mb-2">
+                      <strong>Ano:</strong> <%= book.publishedYear %>
+                    </p>
+                  <% } %>
+                  
+                  <p class="description mb-3">
+                    <%= book.description && book.description.length > 100 ? book.description.substring(0, 100) + '...' : (book.description || 'Sem descrição') %>
+                  </p>
+
+                  <% if (book.sinopsis && book.sinopsis !== book.description) { %>
+                    <p class="sinopsis mb-3">
+                      <small><%= book.sinopsis.length > 80 ? book.sinopsis.substring(0, 80) + '...' : book.sinopsis %></small>
+                    </p>
+                  <% } %>
+
+                  <!-- Estatísticas -->
+                  <div class="book-stats mb-3">
+                    <small class="text-muted">
+                      <% if (book.views && book.views > 0) { %>
+                        👁️ <%= book.views %> visualizações |
+                      <% } %>
+                      <% if (book.downloads && book.downloads > 0) { %>
+                        📥 <%= book.downloads %> downloads |
+                      <% } %>
+                      <% if (book.likes && book.likes > 0) { %>
+                        👍 <%= book.likes %> likes
+                      <% } %>
+                    </small>
+                  </div>
+
+                  <!-- Tags -->
+                  <% if (book.tags && book.tags.length > 0) { %>
+                    <div class="tags mb-3">
+                      <% book.tags.slice(0, 3).forEach(tag => { %>
+                        <span class="badge badge-secondary mr-1"><%= tag %></span>
+                      <% }); %>
+                      <% if (book.tags.length > 3) { %>
+                        <span class="text-muted">+<%= book.tags.length - 3 %> mais</span>
+                      <% } %>
+                    </div>
+                  <% } %>
+
+                  <div class="action-buttons mt-auto">
+                    <a href="/books/<%= book._id %>" class="custom_dark-btn btn-sm">
+                      VER DETALHES
+                    </a>
+                    <% if (book.pdf) { %>
+                      <a href="/books/<%= book._id %>/download" class="custom_dark-btn btn-sm ml-2" style="background-color: #28a745;">
+                        📥 DOWNLOAD
+                      </a>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <div class="col-12">
+            <div class="text-center">
+              <h4>Nenhum livro encontrado</h4>
+              <p>Não há livros cadastrados no momento.</p>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>

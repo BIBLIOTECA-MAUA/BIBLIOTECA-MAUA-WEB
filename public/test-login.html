@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .form-group { margin: 15px 0; }
+        label { display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 10px; margin-bottom: 10px; }
+        button { padding: 10px 20px; margin: 5px; }
+        .result { margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Teste de Login - API</h1>
+        
+        <div class="form-group">
+            <label for="username">Username/Email:</label>
+            <input type="text" id="username" value="mariesimpsons">
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" value="100.000.000-22">
+        </div>
+        
+        <button onclick="testWithIdentify()">Testar com 'identify'</button>
+        <button onclick="testWithIdentifier()">Testar com 'identifier'</button>
+        
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        async function makeLoginRequest(field) {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const data = {
+                [field]: username,
+                password: password
+            };
+            
+            try {
+                console.log(`Enviando requisição com campo '${field}':`, data);
+                
+                const response = await fetch('/auth/sign-in', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('result').innerHTML = `
+                    <h3>Resultado (${field}):</h3>
+                    <p><strong>Status:</strong> ${response.status}</p>
+                    <pre>${JSON.stringify(result, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('result').innerHTML = `
+                    <h3>Erro (${field}):</h3>
+                    <p style="color: red;">${error.message}</p>
+                `;
+            }
+        }
+        
+        function testWithIdentify() {
+            makeLoginRequest('identify');
+        }
+        
+        function testWithIdentifier() {
+            makeLoginRequest('identifier');
+        }
+    </script>
+</body>
+</html>
