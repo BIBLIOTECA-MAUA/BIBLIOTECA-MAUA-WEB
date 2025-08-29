@@ -14,7 +14,7 @@ const handleCommunity = async () => {
             const btn3 = document.getElementById("btn2Recovery");
             if (btn1) {
                 btn1.addEventListener("click", (e) => {
-                    const content = document.getElementById("communityContent");
+                    const content = document.getElementById("box1");
                     content.innerHTML = "";
                     content.innerHTML = `<h2 class="display-4 fw-bold mb-5">Entre para nossa<span class="text-primary"> COMUNIDADE.</span></h2>`;
                 });

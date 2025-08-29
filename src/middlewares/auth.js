@@ -2,7 +2,7 @@ import { tokenVerify } from "../utils/handleJWT.js";
 import { User } from "../models/schemas/user.js";
 
 /**
- * Middleware para verificar token JWT
+ * Middleware para verificar token JWT e autenticar pessoa
  */
 export const authenticateToken = async (req, res, next) => {
     try {
@@ -27,18 +27,18 @@ export const authenticateToken = async (req, res, next) => {
             });
         }
 
-        // Verificar se o usuário ainda existe e está ativo
-        const user = await User.findById(decoded.id).select('isActive');
+        // Verificar se a pessoa ainda existe e está ativa
+        const person = await User.findById(decoded.id).select('isActive');
         
-        if (!user || !user.isActive) {
+        if (!person || !person.isActive) {
             return res.status(403).json({
                 success: false,
-                message: "Usuário não encontrado ou inativo",
-                error: "USER_INACTIVE"
+                message: "Pessoa não encontrada ou inativa",
+                error: "PERSON_INACTIVE"
             });
         }
 
-        req.user = decoded;
+        req.person = decoded;
         next();
 
     } catch (error) {
@@ -56,24 +56,24 @@ export const authenticateToken = async (req, res, next) => {
  */
 export const requireRole = (roles) => {
     return (req, res, next) => {
-        if (!req.user) {
+        if (!req.person) {
             return res.status(401).json({
                 success: false,
-                message: "Usuário não autenticado",
+                message: "Pessoa não autenticada",
                 error: "UNAUTHORIZED"
             });
         }
 
-        const userRole = req.user.role;
+        const personRole = req.person.role;
         const allowedRoles = Array.isArray(roles) ? roles : [roles];
 
-        if (!allowedRoles.includes(userRole)) {
+        if (!allowedRoles.includes(personRole)) {
             return res.status(403).json({
                 success: false,
                 message: "Acesso negado. Permissões insuficientes",
                 error: "INSUFFICIENT_PERMISSIONS",
                 requiredRoles: allowedRoles,
-                userRole
+                personRole
             });
         }
 
@@ -82,11 +82,11 @@ export const requireRole = (roles) => {
 };
 
 /**
- * Middleware para verificar se o usuário é admin
+ * Middleware para verificar se a pessoa é admin
  */
 export const requireAdmin = requireRole(['admin']);
 
 /**
- * Middleware para verificar se o usuário é admin ou moderator
+ * Middleware para verificar se a pessoa é admin ou moderator
  */
 export const requireModeratorOrAdmin = requireRole(['admin', 'moderator']);

@@ -11,6 +11,7 @@ import expressEjsLayouts from 'express-ejs-layouts';
 import { BookRouter } from '../routes/bookRouter.js';
 import {AuthRouter} from '../routes/auth/authRouter.js'
 import { StorageRouter } from '../routes/storageRouter.js';
+
 dotenv.config();
 
 export class Server{
@@ -27,6 +28,7 @@ export class Server{
         this.authRouter = new AuthRouter();
         this.storagePath="/uploads"
         this.storageRouter= new StorageRouter()
+       // this.auditoriaV = auditoriaV;
     }
 
     async initialize() {
@@ -51,7 +53,6 @@ export class Server{
             // Não parar o servidor, apenas logar o erro
         }
 
-        
         // CORS
         this.app.use(cors());
 
@@ -62,10 +63,10 @@ export class Server{
         // Morgan for logging
         this.app.use(morgan('dev'));
 
-        // Serve static files
-        this.app.use(express.static(path.resolve('public')));
-        this.app.use('/uploads', express.static(path.resolve('uploads')));
-        this.app.use(express.static(path.resolve('UPLOADS')));
+        // ✅ Middleware de Auditoria - Aplicado APÓS os middlewares essenciais
+
+
+       
 
         this.app.set("views", path.resolve("views"));
         this.app.set("view engine", "ejs");
@@ -73,6 +74,13 @@ export class Server{
         this.app.set('layout', 'layout'); // ou outro nome, sem .ejs
         this.app.set('layout extractScripts', true); // opcional
 
+         // Serve static files
+        this.app.use(express.static(path.resolve('public')));
+        this.app.use('/uploads', express.static(path.resolve('uploads')));
+        this.app.use(express.static(path.resolve('UPLOADS')));
+       this.app.use(express.static(path.resolve('DATA/JSON')));
+        this.app.use(morgan('dev'));
+      // this.app.use(this.auditoriaV);
     }
 
 

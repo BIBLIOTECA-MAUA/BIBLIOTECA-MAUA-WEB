@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { handlePassword } from "../utils/handlePassword.js";
 import { db } from "../../config/knex.js";
-import { User } from "./schemas/user.js";
 import { Profile } from "./schemas/profile.js";
 export class Pessoa {
   constructor(
@@ -378,34 +377,7 @@ export class Pessoa {
         console.log("ℹ️ Profile já existe no MongoDB");
       }
 
-      // 5. Verificar se já existe user no MongoDB
-      let mongoUser = await User.findOne({ 
-        emailInstitucional: sqlitePessoa.email_institucional 
-      });
-
-      // 6. Criar ou atualizar user no MongoDB
-      if (!mongoUser) {
-        const userData = {
-          username: sqlitePessoa.username,
-          emailInstitucional: sqlitePessoa.email_institucional,
-          passwordHash: sqlitePessoa.password_hash,
-          role: sqlitePessoa.role,
-          tipo: sqlitePessoa.tipo,
-          isActive: true,
-          profileId: mongoProfile._id
-        };
-
-        mongoUser = await User.create(userData);
-        console.log("✅ User criado no MongoDB");
-      } else {
-        // Atualizar referência do profile se necessário
-        if (!mongoUser.profileId) {
-          mongoUser.profileId = mongoProfile._id;
-          await mongoUser.save();
-          console.log("✅ Profile ID atualizado no User MongoDB");
-        }
-        console.log("ℹ️ User já existe no MongoDB");
-      }
+      
 
       return {
         sqlite: {
@@ -414,7 +386,6 @@ export class Pessoa {
         },
         mongodb: {
           profile: mongoProfile,
-          user: mongoUser
         },
         status: "synchronized"
       };

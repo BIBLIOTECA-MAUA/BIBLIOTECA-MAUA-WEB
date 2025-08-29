@@ -4,21 +4,20 @@ import { handleHttpError } from '../errors/handleError.js';
 dotenv.config();
 const JWT_SECRET = process.env.JWT_KEY || 'fallback-secret-key-for-development';
 
-export const tokenSignIn = async ({userObj})=>{
-    try {
+export const personSignIn = async ({personObj})=>{
+    try{
         const sign = jwt.sign({
-            id: userObj.id,
-            username: userObj.username,
-            email: userObj.email,
-            role: userObj.role,
-            tipo: userObj.tipo,
-            profileId: userObj.profileId
+            id: personObj.id,
+            username: personObj.username,
+            email: personObj.email,
+            role: personObj.role,
+            tipo: personObj.tipo,
+            profileId: personObj.profileId
         }, JWT_SECRET, {
-            expiresIn: '2h'
-        })
+            expiresIn: "2h"
+        });
 
-        return sign
-
+        return sign;
         
     } catch (error) {
         console.error("ERROR_SIGN_IN_TOKEN:", error);
@@ -26,6 +25,8 @@ export const tokenSignIn = async ({userObj})=>{
     }
 }
 
+// Alias para compatibilidade (DEPRECATED - use personSignIn)
+export const tokenSignIn = personSignIn;
 
 export const tokenVerify = async (token) => {
     try {

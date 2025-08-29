@@ -1,5 +1,5 @@
 {
-  "name": "biblioteca-maua-web",
+  "name": "biblioteca-maua",
   "version": "0.1.1",
   "description": "",
   "main": "src/app.js",
@@ -15,15 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elbotechia/biblioteca-maua-web.git"
+    "url": "git+https://github.com/elbotechia/biblioteca-maua.git"
   },
   "keywords": [],
   "author": "elbotechia <elbotechia@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/elbotechia/biblioteca-maua-web/issues"
+    "url": "https://github.com/elbotechia/biblioteca-maua/issues"
   },
-  "homepage": "https://github.com/elbotechia/biblioteca-maua-web#readme",
+  "homepage": "https://github.com/elbotechia/biblioteca-maua#readme",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cookie-parser": "~1.4.4",

@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import {db} from '../../../config/knex.js';
 import { handlePassword } from "../../utils/handlePassword.js";
 import { handleDateISONow } from "../../utils/handleDateISONow.js";
-import { tokenSignIn } from "../../utils/handleJWT.js";
+import { personSignIn } from "../../utils/handleJWT.js";
 import { Pessoa } from "../../models/Pessoa.js";
 import bcrypt from "bcryptjs";
 dotenv.config();
@@ -333,8 +333,8 @@ export class AuthController {
       }
 
       // Gerar token usando o helper
-      const token = await tokenSignIn({
-        userObj: {
+      const token = await personSignIn({
+        personObj: {
           id: user.idPessoa,
           username: user.username,
           email: user.email_institucional,

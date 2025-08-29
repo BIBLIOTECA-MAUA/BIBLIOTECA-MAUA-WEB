@@ -1,7 +1,6 @@
 import { Book } from '../models/schemas/book.js';
 import { Profile } from '../models/schemas/profile.js';
 import { Storage } from '../models/schemas/storage.js';
-import { User } from '../models/schemas/user.js';
 import path from 'path';
 
 export class BookController {
@@ -29,12 +28,7 @@ export class BookController {
     async getBooks(req, res){
         try {
             // Buscar livros no banco com populate para author (Profile)
-            const books = await Book.find({ isActive: true })
-                .populate('author', 'nomeReferencial username')
-                .populate('cover', 'url filename')
-                .populate('createdBy', 'username')
-                .sort({ createdAt: -1 })
-                .lean();
+            const books = await Book.find();
             
             res.render('pages/books', { 
                 title: 'Nossos Livros',
@@ -49,7 +43,7 @@ export class BookController {
 
     async getBookById(req, res){
         try {
-            const { id } = req.params;
+            const { id } = req.params.id;
             
             const book = await Book.findById(id)
                 .populate('author', 'nomeReferencial username emailInstitucional bio fotoPerfil')
@@ -116,7 +110,7 @@ export class BookController {
                 cover: coverId,
                 pdf: pdfId,
                 icon: iconId,
-                createdBy: req.user ? req.user._id : null,
+                createdBy: req.person ? req.person._id : null,
                 isActive: req.body.isActive === 'on'
             };
 
@@ -181,14 +175,14 @@ export class BookController {
             const { id } = req.params;
             const { comment } = req.body;
             
-            if (!req.user) {
-                return res.status(401).json({ error: 'Usuário não autenticado' });
+            if (!req.person) {
+                return res.status(401).json({ error: 'Pessoa não autenticada' });
             }
 
             await Book.findByIdAndUpdate(id, {
                 $push: {
                     comments: {
-                        user: req.user._id,
+                        user: req.person._id,
                         comment: comment,
                         date: new Date()
                     }
@@ -207,20 +201,20 @@ export class BookController {
             const { id } = req.params;
             const { rating } = req.body;
             
-            if (!req.user) {
-                return res.status(401).json({ error: 'Usuário não autenticado' });
+            if (!req.person) {
+                return res.status(401).json({ error: 'Pessoa não autenticada' });
             }
 
-            // Remover avaliação anterior do mesmo usuário
+            // Remover avaliação anterior da mesma pessoa
             await Book.findByIdAndUpdate(id, {
-                $pull: { ratings: { user: req.user._id } }
+                $pull: { ratings: { user: req.person._id } }
             });
 
             // Adicionar nova avaliação
             await Book.findByIdAndUpdate(id, {
                 $push: {
                     ratings: {
-                        user: req.user._id,
+                        user: req.person._id,
                         rating: parseInt(rating)
                     }
                 }

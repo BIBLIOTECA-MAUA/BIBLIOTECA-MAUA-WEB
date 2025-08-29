@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { ProfileController } from "../../controllers/profileController.js";
 import { handleValidatorAuth } from "../../validators/authValidator.js";
-import { authenticateToken } from "../../middleware/auth.js";
+import { authenticateToken } from "../../middlewares/auth.js";
 import { validationResult } from "express-validator";
 
 const router = Router();
@@ -22,7 +22,7 @@ const checkValidation = (req, res, next) => {
 
 /**
  * @route   POST /auth/signin
- * @desc    Login do usuário
+ * @desc    Login da pessoa
  * @access  Public
  */
 router.post("/signin", 
@@ -33,7 +33,7 @@ router.post("/signin",
 
 /**
  * @route   POST /auth/signup
- * @desc    Registrar novo usuário
+ * @desc    Registrar nova pessoa
  * @access  Public
  */
 router.post("/signup", 
@@ -44,7 +44,7 @@ router.post("/signup",
 
 /**
  * @route   GET /auth/me
- * @desc    Obter informações do usuário autenticado
+ * @desc    Obter informações da pessoa autenticada
  * @access  Private
  */
 router.get("/me", 

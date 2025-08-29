@@ -53,26 +53,7 @@
       <h1 class="mb-3"><%= book.title %></h1>
 
       <!-- Informações do Autor -->
-      <% if (book.author) { %>
-        <div class="card mb-4">
-          <div class="card-body">
-            <h6 class="card-title">Autor</h6>
-            <div class="d-flex align-items-center">
-              <% if (book.author.fotoPerfil && book.author.fotoPerfil.url) { %>
-                <img src="<%= book.author.fotoPerfil.url %>" alt="<%= book.author.nomeReferencial %>" 
-                     class="rounded-circle me-3" width="50" height="50">
-              <% } %>
-              <div>
-                <h6 class="mb-1"><%= book.author.nomeReferencial %></h6>
-                <small class="text-muted">@<%= book.author.username %></small>
-                <% if (book.author.bio) { %>
-                  <p class="mt-2 mb-0"><%= book.author.bio %></p>
-                <% } %>
-              </div>
-            </div>
-          </div>
-        </div>
-      <% } %>
+
 
       <!-- Metadados -->
       <div class="row mb-4">
