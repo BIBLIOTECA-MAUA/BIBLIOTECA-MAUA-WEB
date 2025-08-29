@@ -114,3 +114,6 @@ npm start
 
 **Sistema totalmente funcional e corrigido!** 🎉
 
+## AUTOR 
+<a href="https://github.com/elbotechia" target="_blank">@ELBotechia</a>
+
